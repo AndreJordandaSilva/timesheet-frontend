@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-6 rounded shadow w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-4">Register</h2>
+    <form id="register-form" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" class="w-full border p-2 rounded" required />
+      <input type="password" id="password" placeholder="Password" class="w-full border p-2 rounded" required />
+      <select id="role" class="w-full border p-2 rounded" required>
+        <option value="">Select Role</option>
+        <option value="worker">Worker</option>
+        <option value="supervisor">Supervisor</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button type="submit" class="bg-green-600 text-white w-full py-2 rounded">Register</button>
+    </form>
+    <p id="error-message" class="text-red-500 mt-2 hidden"></p>
+    <p class="mt-4 text-sm text-gray-600">Already have an account? <a href="login.html" class="text-blue-500 underline">Login</a></p>
+  </div>
+
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const errorMessage = document.getElementById('error-message');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        role: document.getElementById('role').value
+      };
+
+      const response = await fetch('https://your-backend-url/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        window.location.href = 'login.html';
+      } else {
+        errorMessage.textContent = 'Registration failed. Try a different email.';
+        errorMessage.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
